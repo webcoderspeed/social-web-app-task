@@ -1,5 +1,6 @@
 import userRoutes from './user.routes.js';
 import postRoutes from './post.routes.js';
+import friendRoutes from './friend.routes.js';
 
 const BASE_URL = process.env.BASE_URL ?? '/api/v1';
 
@@ -12,6 +13,9 @@ const routes = (app) => {
 
   // post routes
   app.use(`${BASE_URL}/posts`, postRoutes);
+
+  // friend routes
+  app.use(`${BASE_URL}/friends`, friendRoutes);
 };
 
 export default routes;
