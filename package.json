@@ -5,10 +5,13 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "colors": "^1.4.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
+    "express-async-handler": "^1.2.0",
+    "joi": "^17.6.0",
     "mongoose": "^6.3.1",
     "morgan": "^1.10.0",
     "multer": "^1.4.4"
