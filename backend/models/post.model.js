@@ -24,6 +24,7 @@ const postSchema = new Schema(
     visibility: {
       type: String,
       enum: visibilityTypes,
+      default: 'public',
     },
   },
   {

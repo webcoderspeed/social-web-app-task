@@ -17,9 +17,7 @@ export const signUp = asyncHandler(async (req, res, next) => {
 
     return res.status(201).json({
       status: true,
-      data: {
-        user,
-      },
+      data: user,
     });
   } catch (error) {
     next(error);
@@ -43,9 +41,7 @@ export const signIn = asyncHandler(async (req, res, next) => {
 
     return res.status(200).json({
       status: true,
-      data: {
-        user,
-      },
+      data: user,
     });
   } catch (error) {
     next(error);
@@ -60,7 +56,7 @@ export const signIn = asyncHandler(async (req, res, next) => {
 
 export const getMyProfile = asyncHandler(async (req, res, next) => {
   try {
-    const { _id } = req.user;
+    const { _id } = req.user ?? {};
 
     const data = {
       userId: _id,
@@ -71,9 +67,7 @@ export const getMyProfile = asyncHandler(async (req, res, next) => {
 
     return res.status(200).json({
       status: true,
-      data: {
-        user,
-      },
+      data: user,
     });
   } catch (error) {
     next(error);
