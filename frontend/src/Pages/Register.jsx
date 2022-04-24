@@ -1,16 +1,19 @@
-import React from 'react'
-import { Form, Input, Button, PageHeader, } from 'antd';
+import React, { useEffect } from 'react'
+import { Form, Input, Button, PageHeader, Tag } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   signUp
 } from '../store/actions/user.action'
+import { Link } from 'react-router-dom'
 
 const Register = () => {
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+
 
   const userState = useSelector(state => state.user);
-  const { userInfo: { data: user } } = userState;
+  const { myProfile: { user } } = userState;
+  const { signIn: { loading, error } } = userState;
 
   const onFinish = (values) => {
     dispatch(
@@ -22,11 +25,20 @@ const Register = () => {
     )
   };
 
-
-
+  useEffect(() => {
+    if (user) {
+      dispatch({
+        type: 'SIGN_UP_RESET',
+      })
+      window.location.href = '/';
+    }
+  }, [user, dispatch])
 
   return (
     <div className='flex flex-col items-center justify-center p-4'>
+      {
+        loading && <Tag color='blue'>Loading...</Tag>
+      }
       <PageHeader title='Register' className='text-2xl font-semibold' />
       <Form
         name="Register"
@@ -46,7 +58,6 @@ const Register = () => {
           name="email"
           rules={[{ required: true, message: 'Please enter your email!' }]}
           className='grid grid-cols-2 gap-4'
-
         >
           <Input />
         </Form.Item>
@@ -97,6 +108,17 @@ const Register = () => {
           </Button>
         </Form.Item>
       </Form>
+
+      <Link to='/login'>
+        <Tag className='mt-4'
+          color='blue'>
+          Already have an account?
+        </Tag>
+      </Link>
+      {
+        error &&
+        <Tag color='red' className='mt-4'>{error}</Tag>
+      }
     </div>
   )
 }

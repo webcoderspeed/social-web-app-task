@@ -7,10 +7,12 @@ const router = Router();
 
 router
   .route('/')
-  .get(protect, postController.getPosts)
+  .get(postController.getPosts)
   .post(protect, postValidator.createPost, postController.createPost);
 
-router.route('/myposts').get(protect, postController.getMyPosts);
+router.route('/my-posts').get(protect, postController.getMyPosts);
+
+router.route('/friends-posts').get(protect, postController.getFriendPosts);
 
 router.route('/:id').get(protect, postController.getPostById);
 

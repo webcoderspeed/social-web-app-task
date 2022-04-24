@@ -1,11 +1,36 @@
 import { Button, Form, Input, Select } from 'antd';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { createPost } from '../store/actions/post.action';
 
 const CreatePost = () => {
 
+  const dispatch = useDispatch();
+
+  const postState = useSelector(state => state.post);
+
+  const { createPost: {
+    success,
+    loading,
+    error
+  } } = postState;
+
   const onFinish = (values) => {
-    console.log('Success:', values);
+    dispatch(createPost(values));
   };
+
+  useEffect(() => {
+    if (success) {
+      window.location.href = '/';
+    }
+    dispatch({
+      type: 'CREATE_POST_RESET'
+    })
+
+  }, [
+    dispatch,
+    success
+  ])
 
 
   return (

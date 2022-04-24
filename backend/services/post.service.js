@@ -1,4 +1,7 @@
 import Post from '../models/post.model.js';
+import mongoose from 'mongoose';
+
+const { ObjectId } = mongoose.Types;
 
 export const createPost = async ({ body, response }) => {
   try {
@@ -14,6 +17,8 @@ export const getPosts = async ({ response }) => {
   try {
     const posts = await Post.find({
       visibility: 'public',
+    }).sort({
+      createdAt: -1,
     });
 
     return posts;
@@ -41,7 +46,46 @@ export const getMyPosts = async ({ userId, response }) => {
   try {
     const posts = await Post.find({
       userId,
+    }).sort({
+      createdAt: -1,
     });
+
+    return posts;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getFriendPosts = async ({ userId, response }) => {
+  const query = [
+    {
+      $lookup: {
+        from: 'friends',
+        localField: 'userId',
+        foreignField: 'userId',
+        as: 'friends',
+      },
+    },
+    {
+      $unwind: {
+        path: '$friends',
+      },
+    },
+    {
+      $match: {
+        visibility: 'friends',
+        'friends.friendId': ObjectId(userId),
+      },
+    },
+    {
+      $project: {
+        friends: 0,
+      },
+    },
+  ];
+
+  try {
+    const posts = await Post.aggregate(query);
 
     return posts;
   } catch (error) {

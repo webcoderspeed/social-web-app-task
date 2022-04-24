@@ -1,5 +1,8 @@
 import User from '../models/user.model.js';
 import generateToken from '../utils/generateToken.js';
+import mongoose from 'mongoose';
+
+const { ObjectId } = mongoose.Types;
 
 export const signUp = async ({ body, response }) => {
   try {
@@ -72,3 +75,48 @@ export const getMyProfile = async ({ userId, response }) => {
     throw error;
   }
 };
+
+export const getAllUsers = async ({ userId, response }) => {
+  const query = [
+    {
+      $match: {
+        _id: { $ne: ObjectId(userId) },
+      },
+    },
+    {
+      $lookup: {
+        from: 'friends',
+        localField: '_id',
+        foreignField: 'friendId',
+        as: 'friends',
+      },
+    },
+    {
+      $match: {
+        'friends.userId': {
+          $ne: ObjectId(userId),
+        },
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        name: 1,
+        email: 1,
+        password: 1,
+        createdAt: 1,
+        updatedAt: 1,
+      },
+    },
+  ];
+
+  try {
+    const users = await User.aggregate(query);
+
+    return users;
+  } catch (error) {
+    throw error;
+  }
+};
+
+

@@ -107,3 +107,31 @@ export const getMyPosts = asyncHandler(async (req, res, next) => {
     next(error);
   }
 });
+
+/**
+ * @description get friend posts
+ * @route GET /api/v1/posts/friendposts
+ * @access Private
+ */
+
+export const getFriendPosts = asyncHandler(async (req, res, next) => {
+  try {
+    const { _id } = req.user ?? {};
+
+    const data = {
+      userId: _id,
+      response: res,
+    };
+
+    const posts = await postService.getFriendPosts(data);
+
+    return res.status(200).json({
+      success: true,
+      data: posts,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+

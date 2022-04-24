@@ -73,3 +73,29 @@ export const getMyProfile = asyncHandler(async (req, res, next) => {
     next(error);
   }
 });
+
+/**
+ * @description  get all users
+ * @route GET /api/v1/users
+ * @access Private
+ */
+
+export const getAllUsers = asyncHandler(async (req, res, next) => {
+  const { _id } = req.user ?? {};
+
+  try {
+    const data = {
+      userId: _id,
+      response: res,
+    };
+
+    const users = await userService.getAllUsers(data);
+
+    return res.status(200).json({
+      status: true,
+      data: users,
+    });
+  } catch (error) {
+    next(error);
+  }
+});

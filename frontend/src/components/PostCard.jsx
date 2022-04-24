@@ -1,22 +1,15 @@
 import React, { useEffect } from 'react';
 import { Skeleton, Card, Avatar } from 'antd';
 
-const PostCard = ({ posts }) => {
+const PostCard = ({ posts, loading }) => {
 
-  const [loading, setLoading] = React.useState(true);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-  }, [])
 
   return (
     <>
-      {posts.map(post => (
+      {posts && posts.map(post => (
         <Card
-          key={post.id}
-          className='my-4'
+          key={post._id}
+          className='my-4 rounded-lg shadow-md'
         >
           <Skeleton loading={loading} avatar active>
             <Card.Meta

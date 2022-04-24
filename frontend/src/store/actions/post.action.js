@@ -1,85 +1,17 @@
-import * as userConstant from '../constants/user.constant';
+import * as postConstant from '../constants/post.constant';
 import api from '../api/api';
 
-export const signUp = (user) => async (dispatch) => {
+export const getPosts = () => async (dispatch) => {
   try {
     dispatch({
-      type: userConstant.SIGN_UP_REQUEST,
+      type: postConstant.GET_POSTS_REQUEST,
     });
 
-    const { data } = await api.post('/users', user);
+    const { data } = await api.get('/posts');
 
     dispatch({
-      type: userConstant.SIGN_UP_SUCCESS,
+      type: postConstant.GET_POSTS_SUCCESS,
       payload: data.data,
-    });
-
-    dispatch({
-      type: userConstant.GET_MY_PROFILE_SUCCESS,
-      payload: data.data,
-    });
-
-    localStorage.setItem('user', JSON.stringify(data.data));
-  } catch (error) {
-    const message =
-      error.response && error.response.data && error.response.data.message
-        ? error.response.data.message
-        : error.message;
-
-    dispatch({
-      type: userConstant.SIGN_UP_FAILURE,
-      payload: message,
-    });
-  }
-};
-
-export const signIn = (user) => async (dispatch) => {
-  try {
-    dispatch({
-      type: userConstant.SIGN_IN_REQUEST,
-    });
-
-    const { data } = await api.post('/users/login', user);
-
-    dispatch({
-      type: userConstant.SIGN_IN_SUCCESS,
-      payload: data.data,
-    });
-
-    dispatch({
-      type: userConstant.GET_MY_PROFILE_SUCCESS,
-      payload: data.data,
-    });
-
-    localStorage.setItem('user', JSON.stringify(data.data));
-  } catch (error) {
-    const message =
-      error.response && error.response.data && error.response.data.message
-        ? error.response.data.message
-        : error.message;
-
-    dispatch({
-      type: userConstant.SIGN_IN_FAILURE,
-      payload: message,
-    });
-  }
-};
-
-export const getMyProfile = () => async (dispatch) => {
-  try {
-    dispatch({
-      type: userConstant.GET_MY_PROFILE_REQUEST,
-    });
-
-    const { data } = await api.get('/users/profile');
-
-    dispatch({
-      type: userConstant.GET_MY_PROFILE_SUCCESS,
-      payload: data.data,
-    });
-
-    dispatch({
-      type: userConstant.GET_MY_PROFILE_RESET,
     });
   } catch (error) {
     const message =
@@ -88,29 +20,24 @@ export const getMyProfile = () => async (dispatch) => {
         : error.message;
 
     dispatch({
-      type: userConstant.GET_MY_PROFILE_FAILURE,
+      type: postConstant.GET_POSTS_FAILURE,
       payload: message,
     });
   }
 };
 
-export const logOut = () => async (dispatch) => {
+export const getPost = (id) => async (dispatch) => {
   try {
     dispatch({
-      type: userConstant.LOG_OUT_REQUEST,
+      type: postConstant.GET_POST_REQUEST,
     });
 
-    localStorage.removeItem('user');
+    const { data } = await api.get(`/posts/${id}`);
 
     dispatch({
-      type: userConstant.LOG_OUT_SUCCESS,
+      type: postConstant.GET_POST_SUCCESS,
+      payload: data.data,
     });
-
-    dispatch({
-      type: userConstant.LOG_OUT_RESET,
-    });
-
-    window.location.href = '/login';
   } catch (error) {
     const message =
       error.response && error.response.data && error.response.data.message
@@ -118,13 +45,13 @@ export const logOut = () => async (dispatch) => {
         : error.message;
 
     dispatch({
-      type: userConstant.LOG_OUT_FAILURE,
+      type: postConstant.GET_POST_FAILURE,
       payload: message,
     });
   }
 };
 
-export const getUsers = () => async (dispatch, getState) => {
+export const createPost = (post) => async (dispatch, getState) => {
   const { user } = getState();
 
   const {
@@ -141,13 +68,13 @@ export const getUsers = () => async (dispatch, getState) => {
 
   try {
     dispatch({
-      type: userConstant.GET_ALL_USERS_REQUEST,
+      type: postConstant.CREATE_POST_REQUEST,
     });
 
-    const { data } = await api.get('/users', config);
+    const { data } = await api.post('/posts', post, config);
 
     dispatch({
-      type: userConstant.GET_ALL_USERS_SUCCESS,
+      type: postConstant.CREATE_POST_SUCCESS,
       payload: data.data,
     });
   } catch (error) {
@@ -157,7 +84,85 @@ export const getUsers = () => async (dispatch, getState) => {
         : error.message;
 
     dispatch({
-      type: userConstant.GET_ALL_USERS_FAILURE,
+      type: postConstant.CREATE_POST_FAILURE,
+      payload: message,
+    });
+  }
+};
+
+export const getMyPosts = () => async (dispatch, getState) => {
+  const { user } = getState();
+
+  const {
+    myProfile: {
+      user: { token },
+    },
+  } = user;
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  try {
+    dispatch({
+      type: postConstant.GET_MY_POSTS_REQUEST,
+    });
+
+    const { data } = await api.get('/posts/my-posts', config);
+
+    dispatch({
+      type: postConstant.GET_MY_POSTS_SUCCESS,
+      payload: data.data,
+    });
+  } catch (error) {
+    const message =
+      error.response && error.response.data && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+
+    dispatch({
+      type: postConstant.GET_MY_POSTS_FAILURE,
+      payload: message,
+    });
+  }
+};
+
+export const getFriendsPosts = () => async (dispatch, getState) => {
+  const { user } = getState();
+
+  const {
+    myProfile: {
+      user: { token },
+    },
+  } = user;
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  try {
+    dispatch({
+      type: postConstant.GET_FRIEND_POSTS_REQUEST,
+    });
+
+    const { data } = await api.get('/posts/friends-posts', config);
+
+    dispatch({
+      type: postConstant.GET_FRIEND_POSTS_SUCCESS,
+      payload: data.data,
+    });
+  } catch (error) {
+    const message =
+      error.response && error.response.data && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+
+    dispatch({
+      type: postConstant.GET_FRIEND_POSTS_FAILURE,
       payload: message,
     });
   }

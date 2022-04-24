@@ -1,195 +1,186 @@
 import { combineReducers } from 'redux';
-import * as userConstant from '../constants/user.constant';
+import * as postConstant from '../constants/post.constant';
 
-const signUpReducer = (
+const postsReducer = (
   state = {
     loading: false,
     error: null,
-    user: null,
+    posts: [],
   },
   action
 ) => {
   switch (action.type) {
-    case userConstant.SIGN_UP_REQUEST:
+    case postConstant.GET_POSTS_REQUEST:
       return {
         ...state,
         loading: true,
         error: null,
       };
-    case userConstant.SIGN_UP_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        user: action.payload,
-      };
-    case userConstant.SIGN_UP_FAILURE:
-      return {
-        ...state,
-        loading: false,
-        error: action.payload,
-      };
-    case userConstant.SIGN_UP_RESET:
+    case postConstant.GET_POSTS_SUCCESS:
       return {
         ...state,
         loading: false,
         error: null,
-        user: null,
+        posts: action.payload,
+      };
+    case postConstant.GET_POSTS_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
       };
     default:
       return state;
   }
 };
 
-export const signInReducer = (
+const postReducer = (
   state = {
     loading: false,
     error: null,
-    user: null,
+    post: {},
   },
   action
 ) => {
   switch (action.type) {
-    case userConstant.SIGN_IN_REQUEST:
+    case postConstant.GET_POST_REQUEST:
       return {
         ...state,
         loading: true,
         error: null,
       };
-    case userConstant.SIGN_IN_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        user: action.payload,
-      };
-    case userConstant.SIGN_IN_FAILURE:
-      return {
-        ...state,
-        loading: false,
-        error: action.payload,
-      };
-    case userConstant.SIGN_IN_RESET:
+    case postConstant.GET_POST_SUCCESS:
       return {
         ...state,
         loading: false,
         error: null,
-        user: null,
+        post: action.payload,
+      };
+    case postConstant.GET_POST_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
       };
     default:
       return state;
   }
 };
 
-export const logOutReducer = (
+const createPostReducer = (
   state = {
     loading: false,
     error: null,
-    user: null,
+    success: false,
   },
   action
 ) => {
   switch (action.type) {
-    case userConstant.LOG_OUT_REQUEST:
+    case postConstant.CREATE_POST_REQUEST:
       return {
         ...state,
         loading: true,
         error: null,
       };
-    case userConstant.LOG_OUT_SUCCESS:
+    case postConstant.CREATE_POST_SUCCESS:
       return {
         ...state,
         loading: false,
-        user: action.payload,
+        error: null,
+        success: true,
       };
-    case userConstant.LOG_OUT_FAILURE:
+    case postConstant.CREATE_POST_FAILURE:
       return {
         ...state,
         loading: false,
         error: action.payload,
       };
-    case userConstant.LOG_OUT_RESET:
+    case postConstant.CREATE_POST_RESET:
       return {
         ...state,
         loading: false,
         error: null,
-        user: null,
+        success: null,
       };
     default:
       return state;
   }
 };
 
-const myProfileReducer = (
+const myPostsReducer = (
   state = {
     loading: false,
     error: null,
-    user: {},
+    posts: [],
   },
   action
 ) => {
   switch (action.type) {
-    case userConstant.GET_MY_PROFILE_REQUEST:
+    case postConstant.GET_MY_POSTS_REQUEST:
       return {
         ...state,
         loading: true,
         error: null,
       };
-    case userConstant.GET_MY_PROFILE_SUCCESS:
+    case postConstant.GET_MY_POSTS_SUCCESS:
       return {
         ...state,
         loading: false,
-        user: action.payload,
+        error: null,
+        posts: action.payload,
       };
-    case userConstant.GET_MY_PROFILE_FAILURE:
+    case postConstant.GET_MY_POSTS_FAILURE:
       return {
         ...state,
         loading: false,
         error: action.payload,
       };
-    case userConstant.GET_MY_PROFILE_RESET:
+    case postConstant.GET_MY_POSTS_RESET:
       return {
         ...state,
         loading: false,
         error: null,
-        user: {},
+        posts: [],
       };
     default:
       return state;
   }
 };
 
-const allUsersReducer = (
+const friendPostsReducer = (
   state = {
     loading: false,
     error: null,
-    users: [],
+    posts: [],
   },
   action
 ) => {
   switch (action.type) {
-    case userConstant.GET_ALL_USERS_REQUEST:
+    case postConstant.GET_FRIEND_POSTS_REQUEST:
       return {
         ...state,
         loading: true,
         error: null,
       };
-    case userConstant.GET_ALL_USERS_SUCCESS:
+    case postConstant.GET_FRIEND_POSTS_SUCCESS:
       return {
         ...state,
         loading: false,
-        users: action.payload,
+        error: null,
+        posts: action.payload,
       };
-    case userConstant.GET_ALL_USERS_FAILURE:
+    case postConstant.GET_FRIEND_POSTS_FAILURE:
       return {
         ...state,
         loading: false,
         error: action.payload,
       };
-    case userConstant.GET_ALL_USERS_RESET:
+    case postConstant.GET_FRIEND_POSTS_RESET:
       return {
         ...state,
         loading: false,
         error: null,
-        users: [],
+        posts: [],
       };
     default:
       return state;
@@ -197,11 +188,11 @@ const allUsersReducer = (
 };
 
 const reducer = combineReducers({
-  signUp: signUpReducer,
-  signIn: signInReducer,
-  logOut: logOutReducer,
-  myProfile: myProfileReducer,
-  allUsers: allUsersReducer,
+  posts: postsReducer,
+  post: postReducer,
+  createPost: createPostReducer,
+  myPosts: myPostsReducer,
+  friendPosts: friendPostsReducer,
 });
 
 export default reducer;

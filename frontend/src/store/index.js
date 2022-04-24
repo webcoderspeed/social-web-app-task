@@ -6,9 +6,13 @@ import {
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import userReducer from './reducers/user.reducer';
+import postReducer from './reducers/post.reducer';
+import friendReducer from './reducers/friend.reducer';
 
 const reducer = combineReducers({
   user: userReducer,
+  post: postReducer,
+  friend: friendReducer,
 });
 
 const userInfoFromLocalStorage = localStorage.getItem('user')
@@ -17,7 +21,7 @@ const userInfoFromLocalStorage = localStorage.getItem('user')
 
 const initialState = {
   user: {
-    userInfo: { data: userInfoFromLocalStorage },
+    myProfile: { user: userInfoFromLocalStorage },
   },
 };
 

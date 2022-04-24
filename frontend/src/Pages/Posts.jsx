@@ -1,29 +1,38 @@
-import React from 'react'
-import PostCard from '../components/PostCard'
+import React, { useEffect } from 'react';
+import PostCard from '../components/PostCard';
+import { getPosts } from '../store/actions/post.action';
+import { useDispatch, useSelector } from 'react-redux/es/exports';
+import { Link } from 'react-router-dom';
 
 const Posts = () => {
+  const dispatch = useDispatch();
 
-  const posts = [
-    {
-      id: 1,
-      title: 'Post 1',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-      visibility: 'public',
-    },
-    {
-      id: 2,
-      title: 'Post 2',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-      visibility: 'public',
-    }
-  ]
+  const postState = useSelector((state) => state.post);
+
+  const {
+    posts: { posts, loading, error },
+  } = postState;
+
+  useEffect(() => {
+    dispatch(getPosts());
+  }, [dispatch]);
 
   return (
     <div className='mx-auto w-full p-4 md:w-1/2'>
-      <h1 className='font-semibold text-2xl'>Posts</h1>
-      <PostCard posts={posts} />
-    </div>
-  )
-}
+      <div className='flex items-center justify-between gap-5 w-full'>
+        <h1 className='font-semibold text-2xl'>Public Posts</h1>
+        <Link
+          className='bg-black text-white  font-semibold rounded-full h-6 w-6 flex items-center justify-center'
+          to='/create-post'
+        >
+          +
+        </Link>
+      </div>
+      {error && <h1>Error...</h1>}
 
-export default Posts
+      <PostCard posts={posts} loading={loading} />
+    </div>
+  );
+};
+
+export default Posts;
