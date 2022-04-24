@@ -20,7 +20,7 @@ const Peoples = () => {
       {
         users && users?.length === 0 ? (
           <div className='text-center'>
-            <h1 className='text-2xl font-bold'>No more users to follow</h1>
+            <h1 className='text-2xl font-bold'>No users to follow</h1>
           </div>
         ) :
           (

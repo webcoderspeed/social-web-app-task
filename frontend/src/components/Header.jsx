@@ -18,8 +18,8 @@ const Header = () => {
   }
 
   return (
-    <header className="flex items-center w-full p-4">
-      <div className="flex justify-between items-center w-full">
+    <header className="flex items-center justify-between w-full p-4 gap-5">
+      <div className="flex justify-between items-center w-full flex-wrap gap-5">
         {
           user ? (
             <>
@@ -47,9 +47,8 @@ const Header = () => {
             </>
           )
             :
-            <Link to="/login" className="ml-4 px-4 py-2 font-semibold  bg-blue-400 hover:bg-blue-600 text-white hover:text-white rounded-lg">
-              Login
-            </Link>
+            < >
+            </>
         }
       </div>
     </header >

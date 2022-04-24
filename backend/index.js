@@ -16,11 +16,8 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// launch server
 const PORT = process.env.PORT || 5000;
-
-app.get('/', (req, res) => {
-  res.send(`Server is running `);
-});
 
 app.listen(PORT, () => {
   console.log(
