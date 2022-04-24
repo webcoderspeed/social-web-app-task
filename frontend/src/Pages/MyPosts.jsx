@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import PostCard from '../components/PostCard'
-import { getMyPosts, getPosts } from '../store/actions/post.action'
+import { getMyPosts } from '../store/actions/post.action'
 import { useDispatch, useSelector } from 'react-redux/es/exports'
 import { Link } from 'react-router-dom'
 
