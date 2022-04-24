@@ -1,11 +1,34 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Form, Input, Button, PageHeader, } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  signIn
+} from '../store/actions/user.action'
+
 
 const Login = () => {
 
+  const dispatch = useDispatch()
+
+  const userState = useSelector(state => state.user);
+  const { userInfo: { data: user } } = userState;
+
+
   const onFinish = (values) => {
-    console.log('Success:', values);
+    dispatch(
+      signIn({
+        email: values.email,
+        password: values.password,
+      })
+    )
   };
+
+  useEffect(() => {
+    console.log({
+      user
+    })
+  }, [user])
+
 
 
   return (

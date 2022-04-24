@@ -7,6 +7,10 @@ export const signUp = (req, res, next) => {
     password: joi.string().required(),
   });
 
+  console.log({
+    body: req.body,
+  });
+
   const { error } = schema.validate(req.body);
 
   if (error) next(error);

@@ -1,11 +1,27 @@
 import React from 'react'
 import { Form, Input, Button, PageHeader, } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  signUp
+} from '../store/actions/user.action'
 
 const Register = () => {
 
+  const dispatch = useDispatch()
+
+  const userState = useSelector(state => state.user);
+  const { userInfo: { data: user } } = userState;
+
   const onFinish = (values) => {
-    console.log('Success:', values);
+    dispatch(
+      signUp({
+        name: values.name,
+        email: values.email,
+        password: values.password,
+      })
+    )
   };
+
 
 
 
