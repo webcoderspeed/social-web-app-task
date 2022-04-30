@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link,  } from 'react-router-dom';
 import { logOut } from '../store/actions/user.action';
 
 
@@ -10,8 +10,6 @@ const Header = () => {
 
   const userState = useSelector(state => state.user);
   const { myProfile: { user } } = userState;
-
-
 
   const handleLogout = () => {
     dispatch(logOut());
@@ -47,8 +45,7 @@ const Header = () => {
             </>
           )
             :
-            < >
-            </>
+            null
         }
       </div>
     </header >

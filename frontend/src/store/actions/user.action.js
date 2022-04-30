@@ -110,7 +110,7 @@ export const logOut = () => async (dispatch) => {
       type: userConstant.LOG_OUT_RESET,
     });
 
-    window.location.href = '/login';
+    window.location.href = '/';
   } catch (error) {
     const message =
       error.response && error.response.data && error.response.data.message

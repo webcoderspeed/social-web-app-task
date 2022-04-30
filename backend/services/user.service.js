@@ -77,25 +77,14 @@ export const getMyProfile = async ({ userId, response }) => {
 };
 
 export const getAllUsers = async ({ userId, response }) => {
+  // query to look into friends collections and check if userId is in friends array or not if its present add a new field called isFriend to true else false
   const query = [
-    {
-      $match: {
-        _id: { $ne: ObjectId(userId) },
-      },
-    },
     {
       $lookup: {
         from: 'friends',
         localField: '_id',
-        foreignField: 'friendId',
+        foreignField: 'userId',
         as: 'friends',
-      },
-    },
-    {
-      $match: {
-        'friends.userId': {
-          $ne: ObjectId(userId),
-        },
       },
     },
     {
@@ -103,9 +92,15 @@ export const getAllUsers = async ({ userId, response }) => {
         _id: 1,
         name: 1,
         email: 1,
-        password: 1,
-        createdAt: 1,
-        updatedAt: 1,
+        isFriend: {
+          $cond: {
+            if: {
+              $in: [ObjectId(userId), '$friends.friendId'],
+            },
+            then: true,
+            else: false,
+          },
+        },
       },
     },
   ];
@@ -118,5 +113,3 @@ export const getAllUsers = async ({ userId, response }) => {
     throw error;
   }
 };
-
-

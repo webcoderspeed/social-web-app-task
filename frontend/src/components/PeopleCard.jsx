@@ -1,22 +1,25 @@
 import React, { useEffect } from 'react';
 import { Skeleton, Card, Avatar, message } from 'antd';
-import { PlusSquareOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { addFriend, getFriendList, } from '../store/actions/friend.action';
+import { addFriend, removeFriend } from '../store/actions/friend.action';
 
 const PeopleCard = ({ peoples, loading }) => {
 
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getFriendList());
-  }, [dispatch]);
+  const userState = useSelector(state => state.user);
+  const { myProfile: { user } } = userState;
 
   const handleAddFriend = (id, name) => {
     dispatch(addFriend(id));
     message.success(`${name} added to friend list`);
   }
 
+  const handleRemoveFriend = (id, name) => {
+    dispatch(
+      removeFriend(id)
+    )
+    message.success(`${name} removed from friend list`);
+  }
 
   return (
     <>
@@ -25,10 +28,8 @@ const PeopleCard = ({ peoples, loading }) => {
           key={people._id}
           className='my-4 rounded-lg shadow-md'
           actions={[
-            <PlusSquareOutlined
-              key='add'
-              onClick={() => handleAddFriend(people._id, people.name)}
-            />
+            // if the userId is same as peopled._id hidding the add friend button, then show the add friend button
+            user?._id === people?._id ? null : people?.isFriend ? <button onClick={() => handleRemoveFriend(people._id, people.name)}>Remove Friend</button> : <button onClick={() => handleAddFriend(people._id, people.name)}>Add Friend</button>
           ]}
         >
           <Skeleton loading={loading} avatar active>
